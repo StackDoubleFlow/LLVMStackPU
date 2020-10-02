@@ -14,7 +14,11 @@
 #define LLVM_STACKPU2_MCTARGET_DESC_H
 
 namespace llvm {
+
+class MCInstrInfo;
 class Target;
+
+MCInstrInfo *createStackPU2MCInstrInfo();
 
 }
 

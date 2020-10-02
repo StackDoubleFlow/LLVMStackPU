@@ -41,3 +41,19 @@ def R15 : StackPU2Reg<15, "r15">, DwarfRegNum<[15]>;
 def GPR : RegisterClass<"StackPU2", [i8], 8, (
     add R0, R1, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15
 )>;
+
+//===----------------------------------------------------------------------===//
+// Special Registers
+//===----------------------------------------------------------------------===//
+
+def S0 : StackPU2Reg<0, "s0">, DwarfRegNum<[16]>;
+def S1 : StackPU2Reg<1, "s1">, DwarfRegNum<[17]>;
+def S2 : StackPU2Reg<2, "s2">, DwarfRegNum<[18]>;
+def S3 : StackPU2Reg<3, "s3">, DwarfRegNum<[19]>;
+def S4 : StackPU2Reg<4, "s4">, DwarfRegNum<[20]>;
+def S5 : StackPU2Reg<5, "s5">, DwarfRegNum<[21]>;
+def S6 : StackPU2Reg<5, "s5">, DwarfRegNum<[22]>;
+
+def SR : RegisterClass<"StackPU2", [i8], 8, (
+    add S0, S1, S2, S3, S4, S5, S6
+)>;

@@ -28,6 +28,13 @@ public:
                         Optional<CodeModel::Model> CM,
                         CodeGenOpt::Level OL, bool JIT);
 
+  TargetLoweringObjectFile *getObjFileLowering() const override {
+    return this->TLOF.get();
+  }
+
+  TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
+private:
+  std::unique_ptr<TargetLoweringObjectFile> TLOF;
 };
 
 }

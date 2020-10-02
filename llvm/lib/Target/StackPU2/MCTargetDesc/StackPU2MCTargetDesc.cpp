@@ -12,17 +12,15 @@
 //===----------------------------------------------------------------------===//
 
 #include "StackPU2MCTargetDesc.h"
-#include "llvm/MC/MachineLocation.h"
+#include "StackPU2MCAsmInfo.h"
+#include "TargetInfo/StackPU2TargetInfo.h"
+
+#include "llvm/MC/MCAsmBackend.h"
 #include "llvm/MC/MCELFStreamer.h"
-#include "llvm/MC/MCInstrAnalysis.h"
-#include "llvm/MC/MCInstPrinter.h"
+#include "llvm/MC/MCCodeEmitter.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/MC/MCSubtargetInfo.h"
-#include "llvm/MC/MCSymbol.h"
-#include "llvm/Support/CommandLine.h"
-#include "llvm/Support/ErrorHandling.h"
-#include "llvm/Support/FormattedStream.h"
 #include "llvm/Support/TargetRegistry.h"
 
 #define GET_INSTRINFO_MC_DESC
@@ -36,6 +34,28 @@
 
 using namespace llvm;
 
+MCInstrInfo *llvm::createStackPU2MCInstrInfo() {
+  MCInstrInfo *X = new MCInstrInfo();
+  InitStackPU2MCInstrInfo(X);
+
+  return X;
+}
+
+static MCRegisterInfo *createStackPU2MCRegisterInfo(const Triple &TT) {
+  MCRegisterInfo *X = new MCRegisterInfo();
+  InitStackPU2MCRegisterInfo(X, 0);
+
+  return X;
+}
+
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeStackPU2TargetMC() {
+  // Register the MC asm info.
+  RegisterMCAsmInfo<StackPU2MCAsmInfo> X(getTheStackPU2Target());
+
+  // Register the MC instruction info.
+  TargetRegistry::RegisterMCInstrInfo(getTheStackPU2Target(), createStackPU2MCInstrInfo);
+  
+  // Register the MC register info.
+  TargetRegistry::RegisterMCRegInfo(getTheStackPU2Target(), createStackPU2MCRegisterInfo);
 
 }

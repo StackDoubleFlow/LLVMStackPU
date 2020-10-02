@@ -14,7 +14,10 @@
 #include "StackPU2.h"
 #include "TargetInfo/StackPU2TargetInfo.h"
 
+#include "StackPU2TargetObjectFile.h"
 #include "llvm/Support/TargetRegistry.h"
+#include "llvm/CodeGen/Passes.h"
+#include "llvm/CodeGen/TargetPassConfig.h"
 
 namespace llvm {
 
@@ -34,12 +37,35 @@ StackPU2TargetMachine::StackPU2TargetMachine(const Target &T, const Triple &TT,
                         getEffectiveRelocModel(RM),
                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
       Subtarget(TT, std::string(CPU), std::string(FS), *this) {
-  
+  this->TLOF = std::make_unique<StackPU2TargetObjectFile>();
+  initAsmInfo();
 }
 
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeStackPU2Target() {
   // Register the target.
   RegisterTargetMachine<StackPU2TargetMachine> X(getTheStackPU2Target());
+}
+
+namespace {
+/// AVR Code Generator Pass Configuration Options.
+class StackPU2PassConfig : public TargetPassConfig {
+public:
+  StackPU2PassConfig(StackPU2TargetMachine &TM, PassManagerBase &PM)
+      : TargetPassConfig(TM, PM) {}
+  
+  StackPU2TargetMachine &getStackPU2TargetMachine() const {
+    return getTM<StackPU2TargetMachine>();
+  }
+
+};
+} // namespace
+
+//===----------------------------------------------------------------------===//
+// Pass Pipeline Configuration
+//===----------------------------------------------------------------------===//
+
+TargetPassConfig *StackPU2TargetMachine::createPassConfig(PassManagerBase &PM) {
+  return new StackPU2PassConfig(*this, PM);
 }
 
 } // end of namespace llvm

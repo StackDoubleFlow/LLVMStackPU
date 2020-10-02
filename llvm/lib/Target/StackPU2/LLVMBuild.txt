@@ -21,10 +21,11 @@ subdirectories = MCTargetDesc TargetInfo
 type = TargetGroup
 name = StackPU2
 parent = Target
+has_asmprinter = 1
 
 [component_1]
 type = Library
 name = StackPU2CodeGen
 parent = StackPU2
-required_libraries = CodeGen Core MC StackPU2Desc StackPU2Info SelectionDAG Support Target
+required_libraries = AsmPrinter CodeGen Core MC StackPU2Desc StackPU2Info SelectionDAG Support Target
 add_to_library_groups = StackPU2

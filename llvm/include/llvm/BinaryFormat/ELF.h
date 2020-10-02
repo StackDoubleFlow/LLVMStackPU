@@ -313,6 +313,7 @@ enum {
   EM_BPF = 247,           // Linux kernel bpf virtual machine
   EM_VE = 251,            // NEC SX-Aurora VE
   EM_CSKY = 252,          // C-SKY 32-bit processor
+  EM_STACKPU2 = 300,      // StackDoubleFlow Processing Unit 2
 };
 
 // Object file classes.
@@ -777,6 +778,16 @@ enum {
 // ELF Relocation types for CSKY
 enum {
 #include "ELFRelocs/CSKY.def"
+};
+
+// StackPU2 Specific e_flags
+enum : unsigned {
+
+};
+
+// ELF Relocation types for StackPU2
+enum {
+#include "ELFRelocs/StackPU2.def"
 };
 
 #undef ELF_RELOC

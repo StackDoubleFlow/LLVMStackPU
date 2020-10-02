@@ -311,6 +311,7 @@ set(LLVM_ALL_TARGETS
   WebAssembly
   X86
   XCore
+  StackPU2
   )
 
 # List of targets with JIT support:

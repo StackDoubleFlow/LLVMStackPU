@@ -76,6 +76,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case x86:            return "i386";
   case x86_64:         return "x86_64";
   case xcore:          return "xcore";
+  case stackpu2:       return "stackpu2";
   }
 
   llvm_unreachable("Invalid ArchType!");
@@ -153,6 +154,8 @@ StringRef Triple::getArchTypePrefix(ArchType Kind) {
 
   case ve:          return "ve";
   case csky:        return "csky";
+
+  case stackpu2:    return "stackpu2";
   }
 }
 
@@ -322,6 +325,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("renderscript64", renderscript64)
     .Case("ve", ve)
     .Case("csky", csky)
+    .Case("stackpu2", stackpu2)
     .Default(UnknownArch);
 }
 
@@ -452,6 +456,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("wasm32", Triple::wasm32)
     .Case("wasm64", Triple::wasm64)
     .Case("csky", Triple::csky)
+    .Case("stackpu2", Triple::stackpu2)
     .Default(Triple::UnknownArch);
 
   // Some architectures require special parsing logic just to compute the
@@ -714,6 +719,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::thumbeb:
   case Triple::ve:
   case Triple::xcore:
+  case Triple::stackpu2:
     return Triple::ELF;
 
   case Triple::ppc64:
@@ -1249,6 +1255,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
 
   case llvm::Triple::avr:
   case llvm::Triple::msp430:
+  case llvm::Triple::stackpu2:
     return 16;
 
   case llvm::Triple::aarch64_32:
@@ -1332,6 +1339,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::ppc64le:
   case Triple::systemz:
   case Triple::ve:
+  case Triple::stackpu2:
     T.setArch(UnknownArch);
     break;
 
@@ -1403,6 +1411,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::tce:
   case Triple::tcele:
   case Triple::xcore:
+  case Triple::stackpu2:
     T.setArch(UnknownArch);
     break;
 

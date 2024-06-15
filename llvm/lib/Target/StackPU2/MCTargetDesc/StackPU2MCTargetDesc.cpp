@@ -11,6 +11,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "StackPU2InstPrinter.h"
 #include "StackPU2MCTargetDesc.h"
 #include "StackPU2MCAsmInfo.h"
 #include "TargetInfo/StackPU2TargetInfo.h"
@@ -48,6 +49,18 @@ static MCRegisterInfo *createStackPU2MCRegisterInfo(const Triple &TT) {
   return X;
 }
 
+static MCInstPrinter *createStackPU2MCInstPrinter(const Triple &T,
+                                             unsigned SyntaxVariant,
+                                             const MCAsmInfo &MAI,
+                                             const MCInstrInfo &MII,
+                                             const MCRegisterInfo &MRI) {
+  if (SyntaxVariant == 0) {
+    return new StackPU2InstPrinter(MAI, MII, MRI);
+  }
+
+  return nullptr;
+}
+
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeStackPU2TargetMC() {
   // Register the MC asm info.
   RegisterMCAsmInfo<StackPU2MCAsmInfo> X(getTheStackPU2Target());
@@ -57,5 +70,9 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeStackPU2TargetMC() {
   
   // Register the MC register info.
   TargetRegistry::RegisterMCRegInfo(getTheStackPU2Target(), createStackPU2MCRegisterInfo);
+
+  // Register the MCInstPrinter.
+  TargetRegistry::RegisterMCInstPrinter(getTheStackPU2Target(),
+                                        createStackPU2MCInstPrinter);
 
 }

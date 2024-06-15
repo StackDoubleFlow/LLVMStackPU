@@ -57,6 +57,7 @@ public:
     return getTM<StackPU2TargetMachine>();
   }
 
+  bool addInstSelector() override;
 };
 } // namespace
 
@@ -66,6 +67,13 @@ public:
 
 TargetPassConfig *StackPU2TargetMachine::createPassConfig(PassManagerBase &PM) {
   return new StackPU2PassConfig(*this, PM);
+}
+
+bool StackPU2PassConfig::addInstSelector() {
+  // Install an instruction selector.
+  addPass(createStackPU2ISelDag(getStackPU2TargetMachine(), getOptLevel()));
+
+  return false;
 }
 
 } // end of namespace llvm

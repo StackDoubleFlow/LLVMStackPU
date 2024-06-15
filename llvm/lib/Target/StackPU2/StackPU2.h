@@ -20,6 +20,9 @@
 namespace llvm {
 class StackPU2TargetMachine;
 
+FunctionPass *createStackPU2ISelDag(StackPU2TargetMachine &TM,
+                               CodeGenOpt::Level OptLevel);
+
 namespace StackPU2 {
 
 /// An integer that identifies all of the supported StackPU2 address spaces.
